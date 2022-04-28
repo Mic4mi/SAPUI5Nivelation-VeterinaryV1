@@ -1,0 +1,69 @@
+<mvc:View
+    controllerName="acc.veterinary.controller.MainView"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+>
+    <Shell id="shell">
+        <App id="app">
+            <pages>
+                <Page id="page" title="{i18n>appTitle}">
+                    <Table id="idVeterinaryTable"
+                        inset="false"
+                        items="{VeterinaryModel>/}">
+                        <headerToolbar>
+                            <OverflowToolbar id="ovTolTable">                              
+                                <Title id="tableTitle" text="{i18n>title}" level="H2"/>
+                                <ToolbarSpacer id="mainTableTS"/>
+                                <SearchField id="searchName" liveChange="onSearchNames" placeholder="{i18n>name}" width="10rem"/>
+                                <SearchField id="searchBreed" liveChange="onSearchBreeds" placeholder="{i18n>breed}" width="10rem"/>
+                                <Button id="sortButton" press="onOpenSortPopUp" icon="sap-icon://sort" type="Transparent" tooltip="{i18n>sortTooltip}" />
+                            </OverflowToolbar>
+                        </headerToolbar>
+                        <columns>
+                            <Column id="col1">
+                                <Text id="tt1" text="{i18n>id}" />
+                            </Column>
+                            <Column id="col2">
+                                <Text id="tt2" text="{i18n>name}" />
+                            </Column>
+                            <Column id="col3">
+                                <Text id="tt3" text="{i18n>specie}" />
+                            </Column>  
+                            <Column id="col4">
+                                <Text id="tt4" text="{i18n>breed}" />
+                            </Column>
+                            <Column id="col5">
+                                <Text id="tt5" text="{i18n>owner}" />
+                            </Column>
+                            <Column id="col6">
+                                <Text id="tt6" text="{i18n>owner_email}" />
+                            </Column>
+                            <Column id="col7">
+                                <Text id="tt7" text="{i18n>owner_phone}" />
+                            </Column>                            
+                        </columns>
+                        <items>
+                            <ColumnListItem id="colistTable" vAlign="Middle">
+                                <cells>
+                                    <Text id="content1" text="{VeterinaryModel>id}" />
+                                    <!-- <Text id="content2" text="{VeterinaryModel>name}" /> -->
+                                    <ObjectStatus
+                                        id="content2"
+                                        text="{VeterinaryModel>name}"
+                                        state="{ path: 'VeterinaryModel>specie', formatter: '.formatter.formatSpecieColor' }" />
+                                    <Text id="content4" text="{VeterinaryModel>specie}" />
+                                    <Text id="content3" text="{VeterinaryModel>breed}" />
+                                    <Text id="content5" text="{VeterinaryModel>owner}" />
+                                    <Text id="content6" text="{VeterinaryModel>owner_email}" />
+                                    <Text id="content7" text="{VeterinaryModel>owner_phone}" />
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </Page>
+            </pages>
+        </App>
+    </Shell>
+</mvc:View>
+
