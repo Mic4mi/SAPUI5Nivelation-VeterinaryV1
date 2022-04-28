@@ -32,34 +32,56 @@ sap.ui.define([
                 await this.loadModel("Veterinary.json", "VeterinaryModel");
             },
 
-            //TODO: GOAL modularizar, combinar filtros. 
+            onFilterChange: function (oTable, aFilters) {
+                let oBinding = oTable.getBinding("items"),
+                    oFilter;
 
-            onSearchNames: function (oEvent) {
-                let sQuery = oEvent.getSource().getValue(),
-                    oTable = this.byId("idVeterinaryTable"),
-                    oBinding = oTable.getBinding("items"),
-                    oSearchFilter;
+                if (aFilters) {
+                    oFilter = new Filter(aFilters, true);
+                    oBinding.filter(oFilter, "Application");
+                }
+            },
 
-                if (sQuery) {
-                    oSearchFilter = new Filter("name", FilterOperator.Contains, sQuery);
-                } else {
-                    oSearchFilter = null;
+            getFilters: function () {
+                let aFilters = [];
+
+                if (this.oSearchName) {
+                    aFilters.push(this.oSearchName);
                 }
 
-                oBinding.filter(oSearchFilter, "Application");
+                if (this.oSearchBreed) {
+                    aFilters.push(this.oSearchBreed);
+                }
+
+                return aFilters;
+            },
+
+            getSearchFilter: function (sField, sQuery, oFilterOperator) {
+                let oFilter;
+                if (sQuery) {
+                    oFilter = new Filter(sField, oFilterOperator, sQuery);
+                } else {
+                    oFilter = null;
+                }
+                return oFilter;
+            },
+
+            onSearchNames: function (oEvent) {
+                this.oSearchName = this.getSearchFilter(
+                    "name",
+                    oEvent.getSource().getValue(),
+                    FilterOperator.Contains
+                );
+                this.onFilterChange(this.byId("idVeterinaryTable"), this.getFilters());
             },
 
             onSearchBreeds: function (oEvent) {
-                let sQuery = oEvent.getSource().getValue(),
-                    oTable = this.byId("idVeterinaryTable"),
-                    oBinding = oTable.getBinding("items"),
-                    oSearchFilter;
-                if (sQuery) {
-                    oSearchFilter = new Filter("breed", FilterOperator.Contains, sQuery);
-                } else {
-                    oSearchFilter = null;
-                }
-                oBinding.filter(oSearchFilter, "Application");
+                this.oSearchBreed = this.getSearchFilter(
+                    "breed",
+                    oEvent.getSource().getValue(),
+                    FilterOperator.Contains
+                );
+                this.onFilterChange(this.byId("idVeterinaryTable"), this.getFilters());
             },
 
             onSortVeterinaryConfirm: function (oEvent) {
